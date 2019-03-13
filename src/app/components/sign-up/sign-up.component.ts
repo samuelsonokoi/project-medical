@@ -10,7 +10,7 @@ import { UserService } from 'src/app/services/user.service';
 export class SignUpComponent implements OnInit {
 
   signUpForm: FormGroup;
-  year = new Date().getFullYear;
+  year = new Date().getFullYear();
 
   constructor(private _auth: UserService) { 
     this.signUpForm = new FormGroup({

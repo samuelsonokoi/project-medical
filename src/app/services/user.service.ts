@@ -49,23 +49,14 @@ export class UserService {
   }
 
   login(email: string, password: string){
-    this._afAuth.auth.signInWithEmailAndPassword(email, password).then((user) => {
-      if(user != null && this.currentUser.email == this.adminEmail){
-        this._router.navigate(['dashboard']);
-        this.pnotify.info({
-          text: "Signed in successfully",
-          cornerclass: 'ui-pnotify-sharp',
-          styling: 'bootstrap4',
-          icons: 'fontawesome5'
-        })
-      } else {
-        this.pnotify.info({
-          text: "Signed in successfully",
-          cornerclass: 'ui-pnotify-sharp',
-          styling: 'bootstrap4',
-          icons: 'fontawesome5'
-        })
-      }
+    this._afAuth.auth.signInWithEmailAndPassword(email, password).then((_) => {
+      this._router.navigate(['dashboard']);
+      this.pnotify.info({
+        text: "Signed in successfully",
+        cornerclass: 'ui-pnotify-sharp',
+        styling: 'bootstrap4',
+        icons: 'fontawesome5'
+      });
     }).catch((error) => {
       this._handleError(error);
     });

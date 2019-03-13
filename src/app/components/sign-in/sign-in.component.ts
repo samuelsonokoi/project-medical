@@ -9,20 +9,27 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class SignInComponent implements OnInit {
 
-  signInForm:FormGroup;
+  signInForm: FormGroup;
+  year = new Date().getFullYear();
 
   constructor(private _auth: UserService) { 
     this.signInForm = new FormGroup({
-      username: new FormControl("", [Validators.required] ),
+      email: new FormControl("", [Validators.required] ),
       password: new FormControl("", [Validators.required, Validators.minLength(5)] ),
     });
   }
 
+  get email() { return this.signInForm.get('email') }
+  get password() { return this.signInForm.get('password') }
+
   ngOnInit() {
   }
 
-  onSubmit(){
+  onSubmit() {
 
+    this._auth.login(this.email.value, this.password.value);
+
+    this.signInForm.reset();
   }
 
 }
