@@ -1,0 +1,67 @@
+<section role="main" class="content-body">
+  <header class="page-header">
+    <h2>Add Doctor</h2>
+
+    <div class="right-wrapper pull-right">
+      <ol class="breadcrumbs">
+        <li>
+          <a routerLink="/user/dashboard">
+            <i class="fa fa-home"></i>
+          </a>
+        </li>
+        <li><span>Add Doctor</span></li>
+      </ol>
+
+      <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+    </div>
+  </header>
+
+  <!-- start: page -->
+  <div class="row">
+    <div class="col-lg-12 col-xl-6">
+  
+      <div class="panel-body">
+      
+        <div class="row">
+          <form [formGroup]="addDoctorForm" (ngSubmit)="onSubmit()">
+            <div class="col-md-12 form-group">
+              <input type="text" class="form-control input-lg" formControlName="fullName" placeholder="Full Name">
+              <div *ngIf="fullName.invalid && (fullName.dirty || fullName.touched)" class="invalid-feedback">
+                Full Name is required.
+              </div>
+            </div>
+      
+            <div class="col-md-12 form-group">
+              <input type="email" class="form-control input-lg" formControlName="email" placeholder="Doctor's Email">
+              <div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback">
+                Email is required.
+              </div>
+            </div>
+      
+            <div class="col-md-12 form-group">
+              <select class="form-control mb-md input-lg" formControlName="department">
+                <option value="">Select Department</option>
+                <option value="Accident and emergency (A&E">Accident and emergency (A&E</option>
+                <option value="Anaesthetics">Anaesthetics</option>
+                <option value="Cardiology">Cardiology</option>
+                <option value="Chaplaincy">Chaplaincy</option>
+              </select>
+              <div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback">
+                Department is required.
+              </div>
+            </div>
+      
+            <div class="col-md-12 form-group text-center">
+              <button type="submit" class="btn btn-primary hidden-xs" [disabled]="addDoctorForm.invalid">Add</button>
+              <button type="submit" class="btn btn-primary btn-block btn-lg visible-xs mt-lg"
+                [disabled]="addDoctorForm.invalid">Add</button>
+            </div>
+          </form>
+        </div>
+      
+      </div>
+  
+    </div>
+  </div>
+  <!-- end: page -->
+</section>

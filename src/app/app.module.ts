@@ -11,9 +11,13 @@ import { HomeComponent } from './components/home/home.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DashboardComponent } from './components/user/dashboard/dashboard.component';
 import { UserService } from './services/user.service';
 import { AuthGuardService } from './services/auth-guard.service';
+import { UserComponent } from './components/user/user.component';
+import { ProfileComponent } from './components/user/profile/profile.component';
+import { BookAppointmentComponent } from './components/user/book-appointment/book-appointment.component';
+import { AddDoctorComponent } from './components/user/add-doctor/add-doctor.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +27,10 @@ import { AuthGuardService } from './services/auth-guard.service';
     SignUpComponent,
     ForgotPasswordComponent,
     DashboardComponent,
+    UserComponent,
+    ProfileComponent,
+    BookAppointmentComponent,
+    AddDoctorComponent,
   ],
   imports: [
     BrowserModule,

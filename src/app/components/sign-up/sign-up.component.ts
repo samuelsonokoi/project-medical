@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
+import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
@@ -12,7 +14,7 @@ export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
   year = new Date().getFullYear();
 
-  constructor(private _auth: UserService) { 
+  constructor(private _auth: UserService, private _title: Title, private _router: Router) { 
     this.signUpForm = new FormGroup({
       fullName: new FormControl("", [Validators.required]),
       email: new FormControl("", [Validators.required, Validators.email]),
@@ -24,7 +26,9 @@ export class SignUpComponent implements OnInit {
       phone: new FormControl("", [Validators.required]),
       emeContactName: new FormControl("", [Validators.required]),
       emeContactPhone: new FormControl("", [Validators.required]),
-    })
+    });
+
+    this._title.setTitle("Sign Up - Medication Management System");
   }
 
   get fullName() { return this.signUpForm.get('fullName') }
@@ -50,6 +54,8 @@ export class SignUpComponent implements OnInit {
     this._auth.register(this.email.value, this.password.value, data);
 
     this.signUpForm.reset();
+
+    this._router.navigate(["user", "dashboard"]);
   }
 
 }

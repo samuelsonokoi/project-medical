@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import PNotify from 'pnotify/dist/es/PNotify';
 import PNotifyButtons from 'pnotify/dist/es/PNotifyButtons';
+import { first } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class UserService {
   currentUser: firebase.User;
   adminEmail: String = 'samuelsonokoi@gmail.com';
   isAdmin: boolean = false;
-  locations = [];
+  user;
 
   constructor(
     private _afAuth: AngularFireAuth,
@@ -50,7 +51,7 @@ export class UserService {
 
   login(email: string, password: string){
     this._afAuth.auth.signInWithEmailAndPassword(email, password).then((_) => {
-      this._router.navigate(['dashboard']);
+      this._router.navigate(['user', 'dashboard']);
       this.pnotify.info({
         text: "Signed in successfully",
         cornerclass: 'ui-pnotify-sharp',
@@ -65,15 +66,15 @@ export class UserService {
 
   register(email: string, password: string, data: any){
     this._afAuth.auth.createUserWithEmailAndPassword(email, password).then((user) => {
-      this.saveUserData(data);
+      this.saveUserData(data, user.user.uid);
       user.user.sendEmailVerification().then(_ => {
         this.pnotify.info({
-          text: "Email verification sent",
+          text: "Email verification sent email.",
           cornerclass: 'ui-pnotify-sharp',
           styling: 'bootstrap4',
           icons: 'fontawesome5'
         })
-      })
+      });
     }).catch((error) => {
       this._handleError(error);
     });
@@ -91,7 +92,8 @@ export class UserService {
   }
 
   forgotPassword(email: string){
-    this._afAuth.auth.sendPasswordResetEmail(email).then((data) => {
+    this._afAuth.auth.sendPasswordResetEmail(email).then((_) => {
+      this._router.navigate(['sign-in']);
       this.pnotify.info({
         text: "Reset link sent successfully",
         cornerclass: 'ui-pnotify-sharp',
@@ -103,12 +105,6 @@ export class UserService {
     });
   }
 
-  getAllTrackingIDs(){
-    const tidCollection = this._afs.collection("trackingIDs");
-    const tid = tidCollection.valueChanges();
-
-    return tid;
-  }
 
   getAllUsers(){
     const userCollection = this._afs.collection("users");
@@ -130,6 +126,17 @@ export class UserService {
       this._handleError(error);
     });
 
+  }
+
+  bookAppointment(data, uid){
+    this._afs.collection(`users/${uid}/appointments`).add(data);
+    this.pnotify.info({
+      text: "Appointment is successfully booked",
+      cornerclass: 'ui-pnotify-sharp',
+      styling: 'bootstrap4',
+      icons: 'fontawesome5'
+    });
+    this._router.navigate(['user', 'dashboard']);
   }
 
   updateTrackingID(data: any){
@@ -154,25 +161,33 @@ export class UserService {
     });
   }
 
-  get_location(id: any){
-    const tIdRef = this._afs.collection("trackingIDs");
-    tIdRef.ref.where("trackingID", "==", `${id}`).get().then((snapshot) => {
-      snapshot.forEach((doc) => {
-        if (doc.exists) {
-          this.locations.push(doc.data());
-        }
-      });
-    }).catch((error) => {
-      this._handleError(error);
-    });
-
-    return this.locations;
+  // Check if the document exist in firestore
+  docExists(path: string) {
+    return this._afs.doc(path).valueChanges().pipe(first()).toPromise()
   }
 
-  private saveUserData(data: any){
+  // Check if the document exist if not then create it
+  async saveUser(user) {
+    const doc = await this.docExists(`users/${user.uid}`);
+
+    if (doc) {
+    } else {
+      this.saveUserData(user, user.id);
+    }
+  }
+
+  private saveUserData(data, id) {
     // Sets user data to firestore on login or signup
-    const userRef: AngularFirestoreCollection<any> = this._afs.collection(`users`);
-    userRef.add(data);
+    const userRef: AngularFirestoreDocument<any> = this._afs.doc(`users/${id}`);
+    data.uid = id;
+    userRef.set(data, { merge: true });
+    
+    this.pnotify.info({
+      text: "Account successfully created.",
+      cornerclass: 'ui-pnotify-sharp',
+      styling: 'bootstrap4',
+      icons: 'fontawesome5'
+    })
   }
 
   // if error, console log and notify user
