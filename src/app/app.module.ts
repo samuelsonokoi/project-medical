@@ -18,6 +18,8 @@ import { UserComponent } from './components/user/user.component';
 import { ProfileComponent } from './components/user/profile/profile.component';
 import { BookAppointmentComponent } from './components/user/book-appointment/book-appointment.component';
 import { AddDoctorComponent } from './components/user/add-doctor/add-doctor.component';
+import { AppointmentsComponent } from './components/user/appointments/appointments.component';
+import { PatientAppointmentsComponent } from './components/user/patient-appointments/patient-appointments.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,8 @@ import { AddDoctorComponent } from './components/user/add-doctor/add-doctor.comp
     ProfileComponent,
     BookAppointmentComponent,
     AddDoctorComponent,
+    AppointmentsComponent,
+    PatientAppointmentsComponent,
   ],
   imports: [
     BrowserModule,

@@ -83,7 +83,7 @@ export class UserService {
 
   logout(){
     this._afAuth.auth.signOut(); 
-    this._router.navigate(['home']);
+    this._router.navigate(['sign-in']);
     this.pnotify.info({
       text: "Signed out successfully",
       cornerclass: 'ui-pnotify-sharp',
@@ -121,40 +121,24 @@ export class UserService {
     });
   }
 
-  saveTrackingID(data: any){
-    const tIdRef = this._afs.collection("trackingIDs");
-    tIdRef.add(data).then((_) => {
-      this.pnotify.info({
-        text: "Tracking ID saved successfully",
-        cornerclass: 'ui-pnotify-sharp',
-        styling: 'bootstrap4',
-        icons: 'fontawesome5'
-      })
-    }).catch((error) => {
-      this._handleError(error);
+  bookAppointment(data){
+    this._afs.collection(`appointments`).add(data);
+    this.pnotify.info({
+      text: "Appointment is successfully booked",
+      cornerclass: 'ui-pnotify-sharp',
+      styling: 'bootstrap4',
+      icons: 'fontawesome5'
     });
-
+    this._router.navigate(['user', 'dashboard']);
   }
 
-  bookAppointment(data, uid){
-    if (Date.now() > data.date ) {
-      this.pnotify.error({
-        text: "Appointment can't be booked in a past date",
-        cornerclass: 'ui-pnotify-sharp',
-        styling: 'bootstrap4',
-        icons: 'fontawesome5'
-      });
-      this._router.navigate(['user', 'book-appointment']);
-    } else {
-      this._afs.collection(`users/${uid}/appointments`).add(data);
-      this.pnotify.info({
-        text: "Appointment is successfully booked",
-        cornerclass: 'ui-pnotify-sharp',
-        styling: 'bootstrap4',
-        icons: 'fontawesome5'
-      });
-      this._router.navigate(['user', 'dashboard']);
-    }
+  acceptAppointment() {
+    this.pnotify.info({
+      text: "Appointment Accepted",
+      cornerclass: 'ui-pnotify-sharp',
+      styling: 'bootstrap4',
+      icons: 'fontawesome5'
+    });
   }
 
   updateTrackingID(data: any){

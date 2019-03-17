@@ -1,0 +1,51 @@
+<section role="main" class="content-body">
+  <header class="page-header">
+    <h2>Your Appointments</h2>
+    
+    <div class="right-wrapper pull-right">
+      <ol class="breadcrumbs">
+        <li>
+          <a href="/home">
+            <i class="fa fa-home"></i>
+          </a>
+        </li>
+        <li><span>Your Appointments </span></li>
+      </ol>
+    </div>
+  </header>
+
+  <div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12">
+      <section class="panel">
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table mb-lg">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Whom To See</th>
+                  <th>Message</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let a of pAppointments">
+                  <td>{{a.date}}</td>
+                  <td>{{a.time}}</td>
+                  <td>{{a.doctor}}</td>
+                  <td>{{a.message}}</td>
+                  <td>{{a.accepted}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+  
+  
+    </div>
+  </div>
+</section>
+
+

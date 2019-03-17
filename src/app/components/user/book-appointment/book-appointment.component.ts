@@ -17,7 +17,7 @@ export class BookAppointmentComponent implements OnInit {
   doctors = [];
 
   constructor(private _title: Title, private _auth: UserService, private _afAuth: AngularFireAuth, private _afs: AngularFirestore) {
-    this._title.setTitle("Application Dashboard - Medication Management System");
+    this._title.setTitle("Book An Appointment - Medication Management System");
 
     this.bookAppointmentForm = new FormGroup({
       date: new FormControl("", [Validators.required]),
@@ -35,9 +35,10 @@ export class BookAppointmentComponent implements OnInit {
   async ngOnInit() {
     await this._afAuth.auth.onAuthStateChanged((auth) => {
       if (auth) {
-        this._afs.doc(`users/${auth.uid}`).valueChanges().subscribe((user) => {
-          if (user) {
-            this.user = user;
+        this._afs.collection(`users`).ref.where("uid", "==", auth.uid).onSnapshot((querySnapshot) => {
+          if (querySnapshot) {
+            var data = querySnapshot.docs.map(d => d.data());
+            this.user = data;
           }
         });
       }
@@ -48,17 +49,15 @@ export class BookAppointmentComponent implements OnInit {
       this.doctors = data;
     });
 
-    this.doctors = await this._auth.doctors;
-
   }
 
   onSubmit() {
     const { date, time, doctor, message } = this.bookAppointmentForm.value;
-    const bookedBy = this.user.uid, accepted = false;
+    const bookedBy = this.user.fullName, accepted = false;
 
     let data = { date, time, doctor, message, bookedBy, accepted };
 
-    this._auth.bookAppointment(data, this.user.uid);
+    this._auth.bookAppointment(data);
 
     this.bookAppointmentForm.reset();
   }
