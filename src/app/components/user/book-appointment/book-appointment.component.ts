@@ -53,9 +53,9 @@ export class BookAppointmentComponent implements OnInit {
 
   onSubmit() {
     const { date, time, doctor, message } = this.bookAppointmentForm.value;
-    const bookedBy = this.user.fullName, accepted = false;
+    const bookedBy = this.user.fullName, accepted = false, cancelled = false;
 
-    let data = { date, time, doctor, message, bookedBy, accepted };
+    let data = { date, time, doctor, message, bookedBy, accepted, cancelled };
 
     this._auth.bookAppointment(data);
 

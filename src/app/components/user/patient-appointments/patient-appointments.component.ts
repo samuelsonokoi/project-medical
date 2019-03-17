@@ -48,4 +48,16 @@ export class PatientAppointmentsComponent implements OnInit {
     this._auth.acceptAppointment();
   }
 
+  cancel(id) {
+    this._afs.collection("appointments").ref.where("doctor", "==", `${this.user.fullName}`).where("date", '==', `${id.date}`).where("time", '==', `${id.time}`).where("bookedBy", '==', `${id.bookedBy}`).get().then((snapshot) => {
+      snapshot.forEach((doc) => {
+        if (doc.exists) {
+          this._afs.collection("appointments").doc(doc.id).update({ accepted: false, cancelled: true });
+        }
+      });
+    });
+
+    this._auth.cancelAppointment();
+  }
+
 }

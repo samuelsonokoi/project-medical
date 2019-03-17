@@ -141,6 +141,15 @@ export class UserService {
     });
   }
 
+  cancelAppointment() {
+    this.pnotify.info({
+      text: "Appointment Cancelled",
+      cornerclass: 'ui-pnotify-sharp',
+      styling: 'bootstrap4',
+      icons: 'fontawesome5'
+    });
+  }
+
   updateTrackingID(data: any){
     const tIdRef = this._afs.collection("trackingIDs");
     tIdRef.ref.where("trackingID", "==", `${data.trackingID}`).get().then((snapshot) => {
