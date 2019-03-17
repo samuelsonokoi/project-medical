@@ -17,24 +17,54 @@
   <div class="row">
     <div class="col-lg-12">
       <section class="panel">
-        <header class="panel-heading">
-          <div class="panel-actions">
-            <a href="#" class="panel-action panel-action-toggle" data-panel-toggle=""></a>
-            <a href="#" class="panel-action panel-action-dismiss" data-panel-dismiss=""></a>
-          </div>
-  
-          <h2 class="panel-title">Form Elements</h2>
-        </header>
         <div class="panel-body">
-          <form class="form-horizontal form-bordered" [formGroup]="bookAppointment">
-            <div class="form-group">
-              <label class="col-md-3 control-label" for="inputDefault">Default</label>
-              <div class="col-md-6">
-                <input type="text" class="form-control" id="inputDefault">
+          <form [formGroup]="bookAppointmentForm" (ngSubmit)="onSubmit()">
+            <div class="col-md-6 form-group">
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </span>
+                <input type="date" class="form-control input-lg" formControlName="date">
+              </div>
+              <div *ngIf="date.invalid && (date.dirty || date.touched)" class="invalid-feedback">
+                Appointment Date is required.
               </div>
             </div>
-  
-            
+          
+            <div class="col-md-6 form-group">
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <i class="fa fa-clock"></i>
+                </span>
+                <input type="time" class="form-control input-lg" formControlName="time">
+              </div>
+              <div *ngIf="time.invalid && (time.dirty || time.touched)" class="invalid-feedback">
+                Appointment Time is required.
+              </div>
+            </div>
+          
+            <div class="col-md-12 form-group">
+              <select class="form-control mb-md input-lg" formControlName="doctor">
+                <option value="">Whom To See</option>
+                <option *ngFor="let d of doctors" value="{{d.fullName}}">{{d.fullName}} - {{d.department}}</option>
+              </select>
+              <div *ngIf="doctor.invalid && (doctor.dirty || doctor.touched)" class="invalid-feedback">
+                Doctor is required.
+              </div>
+            </div>
+
+            <div class="col-md-12 form-group">
+              <textarea class="form-control" rows="3" placeholder="Enter Appointment Message" formControlName="message"></textarea>
+              <div *ngIf="message.invalid && (message.dirty || message.touched)" class="invalid-feedback">
+                Message is required.
+              </div>
+            </div>
+          
+            <div class="col-md-12 form-group text-center">
+              <button type="submit" class="btn btn-primary hidden-xs" [disabled]="bookAppointmentForm.invalid">Book Appointment</button>
+              <button type="submit" class="btn btn-primary btn-block btn-lg visible-xs mt-lg"
+                [disabled]="bookAppointmentForm.invalid">Book Appointment</button>
+            </div>
           </form>
         </div>
       </section>

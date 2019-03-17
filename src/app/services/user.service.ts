@@ -16,6 +16,7 @@ export class UserService {
   adminEmail: String = 'samuelsonokoi@gmail.com';
   isAdmin: boolean = false;
   user;
+  doctors = [];
 
   constructor(
     private _afAuth: AngularFireAuth,
@@ -113,6 +114,13 @@ export class UserService {
     return users;
   }
 
+  async getAllDoctors() {
+    await this._afs.collection("users").ref.where("role", "==", "doctor").onSnapshot((querySnapshot) => {
+      var data = querySnapshot.docs.map(d => d.data());
+      this.doctors = data;
+    });
+  }
+
   saveTrackingID(data: any){
     const tIdRef = this._afs.collection("trackingIDs");
     tIdRef.add(data).then((_) => {
@@ -129,14 +137,24 @@ export class UserService {
   }
 
   bookAppointment(data, uid){
-    this._afs.collection(`users/${uid}/appointments`).add(data);
-    this.pnotify.info({
-      text: "Appointment is successfully booked",
-      cornerclass: 'ui-pnotify-sharp',
-      styling: 'bootstrap4',
-      icons: 'fontawesome5'
-    });
-    this._router.navigate(['user', 'dashboard']);
+    if (Date.now() > data.date ) {
+      this.pnotify.error({
+        text: "Appointment can't be booked in a past date",
+        cornerclass: 'ui-pnotify-sharp',
+        styling: 'bootstrap4',
+        icons: 'fontawesome5'
+      });
+      this._router.navigate(['user', 'book-appointment']);
+    } else {
+      this._afs.collection(`users/${uid}/appointments`).add(data);
+      this.pnotify.info({
+        text: "Appointment is successfully booked",
+        cornerclass: 'ui-pnotify-sharp',
+        styling: 'bootstrap4',
+        icons: 'fontawesome5'
+      });
+      this._router.navigate(['user', 'dashboard']);
+    }
   }
 
   updateTrackingID(data: any){
@@ -181,7 +199,7 @@ export class UserService {
     const userRef: AngularFirestoreDocument<any> = this._afs.doc(`users/${id}`);
     data.uid = id;
     userRef.set(data, { merge: true });
-    
+
     this.pnotify.info({
       text: "Account successfully created.",
       cornerclass: 'ui-pnotify-sharp',
