@@ -17,6 +17,10 @@ export class UserService {
   isAdmin: boolean = false;
   user;
   doctors = [];
+  isLoggedIn = false;
+
+  // store the URL so we can redirect after logging in
+  redirectUrl: string;
 
   constructor(
     private _afAuth: AngularFireAuth,
@@ -50,11 +54,6 @@ export class UserService {
     return PNotify;
   }
 
-  // Returns true if user is logged in
-  get authenticated(): boolean {
-    return this.currentUser !== null;
-  }
-
   login(email: string, password: string){
     this._afAuth.auth.signInWithEmailAndPassword(email, password).then((_) => {
       this._router.navigate(['user', 'dashboard']);
@@ -64,6 +63,7 @@ export class UserService {
         styling: 'bootstrap4',
         icons: 'fontawesome5'
       });
+      this.isLoggedIn = true;
     }).catch((error) => {
       this._handleError(error);
     });
@@ -73,14 +73,6 @@ export class UserService {
   register(email: string, password: string, data: any){
     this._afAuth.auth.createUserWithEmailAndPassword(email, password).then((user) => {
       this.saveUserData(data, user.user.uid);
-      user.user.sendEmailVerification().then(_ => {
-        this.pnotify.info({
-          text: "Email verification sent email.",
-          cornerclass: 'ui-pnotify-sharp',
-          styling: 'bootstrap4',
-          icons: 'fontawesome5'
-        })
-      });
     }).catch((error) => {
       this._handleError(error);
     });
@@ -94,7 +86,8 @@ export class UserService {
       cornerclass: 'ui-pnotify-sharp',
       styling: 'bootstrap4',
       icons: 'fontawesome5'
-    })
+    });
+    this.isLoggedIn = false;
   }
 
   forgotPassword(email: string){
@@ -175,14 +168,14 @@ export class UserService {
     this._router.navigate(['user', 'dashboard']);
   }
 
-  updateTrackingID(data: any){
-    const tIdRef = this._afs.collection("trackingIDs");
-    tIdRef.ref.where("trackingID", "==", `${data.trackingID}`).get().then((snapshot) => {
+  makeAdmin(uid){
+    const userRef = this._afs.collection("users");
+    userRef.ref.where("uid", "==", `${uid}`).get().then((snapshot) => {
       snapshot.forEach((doc) => {
         if (doc.exists) {
-          tIdRef.doc(doc.id).update(data).then((_) => {
+          userRef.doc(doc.id).update({role: "admin"}).then((_) => {
             this.pnotify.info({
-              text: "Tracking ID updated successfully",
+              text: "Admin priviledges has been granted.",
               cornerclass: 'ui-pnotify-sharp',
               styling: 'bootstrap4',
               icons: 'fontawesome5'

@@ -14,10 +14,83 @@
     </div>
   </header>
 
-  <h2>Prescription For Patients</h2>
-
+  
   <div class="row">
-    <div class="col-xl-12 col-lg-12 col-md-12">
+
+    <div class="col-xl-12 col-lg-12 col-md-12" *ngIf="user?.role == 'admin'">
+      <h2>All Doctors</h2>
+      <section class="panel">
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table mb-lg">
+              <thead>
+                <tr>
+                  <th>Full Name</th>
+                  <th>Email</th>
+                  <th>Department</th>
+                  <th>Role</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let d of allDoctors">
+                  <td>{{d.fullName}}</td>
+                  <td>{{d.email}}</td>
+                  <td>{{d.department}}</td>
+                  <td>{{d.role}}</td>
+                  <td><button class="btn btn-primary" (click)="makeAdmin(d.uid)">Make Admin</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    
+    
+    </div>
+
+    <div class="col-xl-12 col-lg-12 col-md-12" *ngIf="user?.role == 'patient'">
+      <h2>Your Medical Prescriptions</h2>
+      <section class="panel">
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table mb-lg">
+              <thead>
+                <tr>
+                  <th>Medication Code</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Medication Routine</th>
+                  <th>Doctors Remark</th>
+                  <th>Doctors Remark Date</th>
+                  <th>Prescription</th>
+                  <th>Prescription Date</th>
+                  <th>Prescribed By</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let p of pPrescriptions">
+                  <td>{{p.medicationCode}}</td>
+                  <td>{{p.startDate}}</td>
+                  <td>{{p.endDate}}</td>
+                  <td>{{p.medRoutine}}</td>
+                  <td>{{p.doctorRemark}}</td>
+                  <td>{{p.doctorRemarkDate | date}}</td>
+                  <td>{{p.prescription}}</td>
+                  <td>{{p.prescriptionDate | date}}</td>
+                  <td>{{p.prescribedBy}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    
+    
+    </div>
+
+    <div class="col-xl-12 col-lg-12 col-md-12" *ngIf="user?.role == 'doctor'">
+      <h2>Prescription For Patients</h2>
       <section class="panel">
         <div class="panel-body">
           <div class="table-responsive">

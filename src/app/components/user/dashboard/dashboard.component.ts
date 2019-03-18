@@ -15,8 +15,11 @@ export class DashboardComponent implements OnInit {
   user;
   patients = [];
   prescriptions = [];
+  pPrescriptions = [];
   patientView = false;
   patient;
+  patientsAppointments = [];
+  allDoctors = [];
 
   constructor(private _title: Title, private _auth: UserService, private _afAuth: AngularFireAuth, private _afs: AngularFirestore) { 
     this._title.setTitle("Application Dashboard - Medication Management System");
@@ -28,6 +31,11 @@ export class DashboardComponent implements OnInit {
         this._afs.doc(`users/${auth.uid}`).valueChanges().subscribe((user) => {
           if (user) {
             this.user = user;
+
+            this._afs.collection("prescriptions").ref.where("patient", "==", `${this.user.fullName}`).onSnapshot((querySnapshot) => {
+              var data = querySnapshot.docs.map(d => d.data());
+              this.pPrescriptions = data;
+            });
           }
         });
       }
@@ -36,6 +44,11 @@ export class DashboardComponent implements OnInit {
     await this._afs.collection("users").ref.where("role", "==", "patient").onSnapshot((querySnapshot) => {
       var data = querySnapshot.docs.map(d => d.data());
       this.patients = data;
+    });
+
+    await this._afs.collection("users").ref.where("role", "==", "doctor").onSnapshot((querySnapshot) => {
+      var data = querySnapshot.docs.map(d => d.data());
+      this.allDoctors = data;
     });
 
     await this._auth.getAllPrescriptions().subscribe((pres) => {
@@ -49,6 +62,10 @@ export class DashboardComponent implements OnInit {
       this.patient = data;
     });
     this.patientView = true;
+  }
+
+  makeAdmin(doctor){
+    this._auth.makeAdmin(doctor);
   }
 
 }

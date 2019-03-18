@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user',
@@ -13,7 +14,7 @@ export class UserComponent implements OnInit {
   currentUser;
 
   constructor(private _auth: UserService, private _afAuth: AngularFireAuth, private _afs: AngularFirestore) { 
-    
+
   }
 
   async ngOnInit() {
