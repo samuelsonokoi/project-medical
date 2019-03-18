@@ -73,6 +73,12 @@
                 </a>
               </li>
               <li routerLinkActive="nav-active" *ngIf="currentUser?.role == 'doctor'">
+                <a routerLink="/user/prescribe-medication">
+                  <i class="fa fa-user-md" aria-hidden="true"></i>
+                  <span>Prescribe Medication</span>
+                </a>
+              </li>
+              <li routerLinkActive="nav-active" *ngIf="currentUser?.role == 'doctor'">
                 <a routerLink="/user/patient-appointments">
                   <i class="fa fa-calendar" aria-hidden="true"></i>
                   <span>Patients Appointments</span>
@@ -84,7 +90,7 @@
                   <span>Book Appointment</span>
                 </a>
               </li>
-              <li routerLinkActive="nav-active">
+              <li routerLinkActive="nav-active" *ngIf="currentUser?.role == 'admin'">
                 <a routerLink="/user/add-doctor">
                   <i class="fa fa-user" aria-hidden="true"></i>
                   <span>Add Doctor</span>

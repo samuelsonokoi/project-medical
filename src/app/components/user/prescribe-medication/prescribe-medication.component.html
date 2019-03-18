@@ -1,0 +1,107 @@
+<section role="main" class="content-body">
+  <header class="page-header">
+    <h2>Prescribe Medication</h2>
+
+    <div class="right-wrapper pull-right">
+      <ol class="breadcrumbs">
+        <li>
+          <a href="/home">
+            <i class="fa fa-home"></i>
+          </a>
+        </li>
+        <li><span>Prescribe Medication </span></li>
+      </ol>
+    </div>
+  </header>
+
+  <div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12">
+      <section class="panel">
+        <div class="panel-body">
+          <form [formGroup]="prescriptionForm" (ngSubmit)="onSubmit()">
+            <div class="col-md-12 form-group">
+              <label for="medicationCode">Medication Code</label>
+              <input type="text" class="form-control" placeholder="Medication Code" formControlName="medicationCode">
+              <div [hidden]="medicationCode.valid || medicationCode.pristine" class="invalid-feedback">
+                Medication Code is required.
+              </div>
+            </div>
+
+            <div class="col-md-6 form-group">
+              <label for="startDate">Start Date</label>
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </span>
+                <input type="date" class="form-control input-lg" formControlName="startDate">
+              </div>
+              <div *ngIf="startDate.invalid && (startDate.dirty || startDate.touched)" class="invalid-feedback">
+                Start Date is required.
+              </div>
+            </div>
+
+            <div class="col-md-6 form-group">
+              <label for="endDate">End Date</label>
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </span>
+                <input type="date" class="form-control input-lg" formControlName="endDate">
+              </div>
+              <div *ngIf="endDate.invalid && (endDate.dirty || endDate.touched)" class="invalid-feedback">
+                End Date is required.
+              </div>
+            </div>
+
+            <div class="col-md-12 form-group">
+              <select class="form-control mb-md input-lg" formControlName="medRoutine">
+                <option value="">Select Medication Routine</option>
+                <option value="Once Daily">Once Daily</option>
+                <option value="Twice Daily">Twice Daily</option>
+                <option value="Three Times Daily">Three Times Daily</option>
+              </select>
+              <div *ngIf="medRoutine.invalid && (medRoutine.dirty || medRoutine.touched)" class="invalid-feedback">
+                Medication Routine is required.
+              </div>
+            </div>
+
+            <div class="col-md-12 form-group">
+              <label for="doctorRemark">Doctor's Remark</label>
+              <textarea class="form-control" rows="3" placeholder="Enter Doctor's Remark" formControlName="doctorRemark"></textarea>
+              <div *ngIf="doctorRemark.invalid && (doctorRemark.dirty || doctorRemark.touched)" class="invalid-feedback">
+                Doctor Remark is required.
+              </div>
+            </div>
+
+            <div class="col-md-12 form-group">
+              <label for="prescription">Patient's Prescription</label>
+              <textarea class="form-control" rows="3" placeholder="Enter Patient's Prescription" formControlName="prescription"></textarea>
+              <div *ngIf="prescription.invalid && (prescription.dirty || prescription.touched)" class="invalid-feedback">
+                Patient's Prescription is required.
+              </div>
+            </div>
+        
+            <div class="col-md-12 form-group">
+              <select class="form-control mb-md input-lg" formControlName="patient">
+                <option value="">Select Patient</option>
+                <option *ngFor="let p of patients" value="{{p.fullName}}">{{p.fullName}} - {{p.email}}</option>
+              </select>
+              <div *ngIf="patient.invalid && (patient.dirty || patient.touched)" class="invalid-feedback">
+                Patient is required.
+              </div>
+            </div>
+
+            <div class="col-md-12 form-group text-center">
+              <button type="submit" class="btn btn-primary hidden-xs" [disabled]="prescriptionForm.invalid">Save Prescription</button>
+              <button type="submit" class="btn btn-primary btn-block btn-lg visible-xs mt-lg"
+                [disabled]="prescriptionForm.invalid">Save Prescription</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+
+    </div>
+  </div>
+
+</section>

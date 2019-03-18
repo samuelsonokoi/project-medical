@@ -13,6 +13,10 @@ export class DashboardComponent implements OnInit {
 
   year = new Date().getFullYear();
   user;
+  patients = [];
+  prescriptions = [];
+  patientView = false;
+  patient;
 
   constructor(private _title: Title, private _auth: UserService, private _afAuth: AngularFireAuth, private _afs: AngularFirestore) { 
     this._title.setTitle("Application Dashboard - Medication Management System");
@@ -28,6 +32,23 @@ export class DashboardComponent implements OnInit {
         });
       }
     });
+
+    await this._afs.collection("users").ref.where("role", "==", "patient").onSnapshot((querySnapshot) => {
+      var data = querySnapshot.docs.map(d => d.data());
+      this.patients = data;
+    });
+
+    await this._auth.getAllPrescriptions().subscribe((pres) => {
+      this.prescriptions = pres
+    });
+  }
+
+  async viewPatient(p){
+    await this._afs.collection("users").ref.where("role", "==", "patient").where("fullName", "==", `${p}`).onSnapshot((querySnapshot) => {
+      var data = querySnapshot.docs.map(d => d.data());
+      this.patient = data;
+    });
+    this.patientView = true;
   }
 
 }

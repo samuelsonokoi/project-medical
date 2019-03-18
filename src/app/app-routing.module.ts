@@ -12,6 +12,7 @@ import { BookAppointmentComponent } from './components/user/book-appointment/boo
 import { AddDoctorComponent } from './components/user/add-doctor/add-doctor.component';
 import { AppointmentsComponent } from './components/user/appointments/appointments.component';
 import { PatientAppointmentsComponent } from './components/user/patient-appointments/patient-appointments.component';
+import { PrescribeMedicationComponent } from './components/user/prescribe-medication/prescribe-medication.component';
 
 const routes: Routes = [
   { path: "", component: HomeComponent, pathMatch: "full" },
@@ -21,6 +22,7 @@ const routes: Routes = [
     { path: "book-appointment", component: BookAppointmentComponent, pathMatch: "full"},
     { path: "appointments", component: AppointmentsComponent, pathMatch: "full"},
     { path: "patient-appointments", component: PatientAppointmentsComponent, pathMatch: "full"},
+    { path: "prescribe-medication", component: PrescribeMedicationComponent, pathMatch: "full"},
     { path: "add-doctor", component: AddDoctorComponent, pathMatch: "full"},
   ]},
   { path: "sign-in", component: SignInComponent },

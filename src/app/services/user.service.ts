@@ -30,6 +30,11 @@ export class UserService {
     this._afAuth.auth.onAuthStateChanged((user) => {
       if (user != null) {
         this.currentUser = user;
+        this._afs.doc(`users/${user.uid}`).valueChanges().subscribe((user) => {
+          if (user) {
+            this.user = user;
+          }
+        });
         if (user.email == this.adminEmail) {
           this.isAdmin = true;
         }
@@ -110,15 +115,24 @@ export class UserService {
   getAllUsers(){
     const userCollection = this._afs.collection("users");
     const users = userCollection.valueChanges();
-
     return users;
   }
 
-  async getAllDoctors() {
-    await this._afs.collection("users").ref.where("role", "==", "doctor").onSnapshot((querySnapshot) => {
+  getAllPrescriptions() {
+    const prescriptionCollection = this._afs.collection("prescriptions");
+    const prescriptions = prescriptionCollection.valueChanges();
+    return prescriptions;
+  }
+
+  getAllDoctors() {
+    this._afs.collection("users").ref.where("role", "==", "doctor").onSnapshot((querySnapshot) => {
       var data = querySnapshot.docs.map(d => d.data());
       this.doctors = data;
     });
+  }
+
+  async getAllPatients() {
+    return await this._afs.collection("users").ref.where("role", "==", "patient").get();
   }
 
   bookAppointment(data){
@@ -148,6 +162,17 @@ export class UserService {
       styling: 'bootstrap4',
       icons: 'fontawesome5'
     });
+  }
+
+  addPrescription(data) {
+    this._afs.collection(`prescriptions`).add(data);
+    this.pnotify.info({
+      text: "Patient's prescription is successfully saved",
+      cornerclass: 'ui-pnotify-sharp',
+      styling: 'bootstrap4',
+      icons: 'fontawesome5'
+    });
+    this._router.navigate(['user', 'dashboard']);
   }
 
   updateTrackingID(data: any){

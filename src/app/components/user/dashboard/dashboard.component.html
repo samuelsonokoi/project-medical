@@ -14,6 +14,89 @@
     </div>
   </header>
 
-  <h2>Welcome {{user?.fullName}}</h2>
+  <h2>Prescription For Patients</h2>
+
+  <div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12">
+      <section class="panel">
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table mb-lg">
+              <thead>
+                <tr>
+                  <th>Medication Code</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Medication Routine</th>
+                  <th>Doctors Remark</th>
+                  <th>Doctors Remark Date</th>
+                  <th>Prescription</th>
+                  <th>Prescription Date</th>
+                  <th>Prescribed By</th>
+                  <th>Patient's Name</th>
+                  <th>View Patient</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let p of prescriptions">
+                  <td>{{p.medicationCode}}</td>
+                  <td>{{p.startDate}}</td>
+                  <td>{{p.endDate}}</td>
+                  <td>{{p.medRoutine}}</td>
+                  <td>{{p.doctorRemark}}</td>
+                  <td>{{p.doctorRemarkDate | date}}</td>
+                  <td>{{p.prescription}}</td>
+                  <td>{{p.prescriptionDate | date}}</td>
+                  <td>{{p.prescribedBy}}</td>
+                  <td>{{p.patient}}</td>
+                  <td>
+                    <button class="btn btn-primary" (click)="viewPatient(p.patient)">View Patient Details</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+  
+  
+    </div>
+
+    <div class="col-xl-12 col-lg-12 col-md-12" *ngIf="patientView == true">
+      <h2>Patient's Details</h2>
+      <section class="panel">
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table mb-lg">
+              <thead>
+                <tr>
+                  <th>Full Name</th>
+                  <th>Email</th>
+                  <th>Phone Number</th>
+                  <th>Date Of Birth</th>
+                  <th>Address</th>
+                  <th>Emergency Contact Name</th>
+                  <th>Emergency Contact Phone</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let p of patient">
+                  <td>{{p.fullName}}</td>
+                  <td>{{p.email}}</td>
+                  <td>{{p.phone}}</td>
+                  <td>{{p.dob}}</td>
+                  <td>{{p.address}}</td>
+                  <td>{{p.emeContactName}}</td>
+                  <td>{{p.emeContactPhone}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    
+    
+    </div>
+  </div>
 
 </section>
