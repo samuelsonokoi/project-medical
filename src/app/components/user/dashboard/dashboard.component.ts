@@ -20,6 +20,7 @@ export class DashboardComponent implements OnInit {
   patient;
   patientsAppointments = [];
   allDoctors = [];
+  allAppointments = [];
 
   constructor(private _title: Title, private _auth: UserService, private _afAuth: AngularFireAuth, private _afs: AngularFirestore) { 
     this._title.setTitle("Application Dashboard - Medication Management System");
@@ -54,6 +55,12 @@ export class DashboardComponent implements OnInit {
     await this._auth.getAllPrescriptions().subscribe((pres) => {
       this.prescriptions = pres
     });
+
+    await this._auth.getAllAppointments().subscribe((data) => {
+      if (data) {
+        this.allAppointments = data;
+      }
+    });
   }
 
   async viewPatient(p){
@@ -66,6 +73,18 @@ export class DashboardComponent implements OnInit {
 
   makeAdmin(doctor){
     this._auth.makeAdmin(doctor);
+  }
+
+  cancel(id) {
+    this._afs.collection("appointments").ref.where("doctor", "==", `${this.user.fullName}`).where("date", '==', `${id.date}`).where("time", '==', `${id.time}`).where("bookedBy", '==', `${id.bookedBy}`).get().then((snapshot) => {
+      snapshot.forEach((doc) => {
+        if (doc.exists) {
+          this._afs.collection("appointments").doc(doc.id).update({ accepted: false, cancelled: true });
+        }
+      });
+    });
+
+    this._auth.cancelAppointment();
   }
 
 }

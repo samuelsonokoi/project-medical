@@ -111,6 +111,12 @@ export class UserService {
     return users;
   }
 
+  getAllAppointments() {
+    const appointmentCollection = this._afs.collection("appointments");
+    const appointments = appointmentCollection.valueChanges();
+    return appointments;
+  }
+
   getAllPrescriptions() {
     const prescriptionCollection = this._afs.collection("prescriptions");
     const prescriptions = prescriptionCollection.valueChanges();

@@ -18,6 +18,48 @@
   <div class="row">
 
     <div class="col-xl-12 col-lg-12 col-md-12" *ngIf="user?.role == 'admin'">
+      <h2>All Appointments</h2>
+      <section class="panel">
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table mb-lg">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Whom To See</th>
+                  <th>Message</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let a of allAppointments">
+                  <td>{{a.date}}</td>
+                  <td>{{a.time}}</td>
+                  <td>{{a.doctor}}</td>
+                  <td>{{a.message}}</td>
+                  <td>
+                    <span *ngIf="a.accepted == false && a.cancelled == false" class="text-warning">Pending</span>
+      
+                    <span *ngIf="a.accepted == true && a.cancelled == false" class="text-success">Accepted</span>
+      
+                    <span *ngIf="a.accepted == false && a.cancelled == true" class="text-danger">Cancelled</span>
+                  </td>
+                  <td>
+                    <button class="btn btn-danger" *ngIf="a.accepted == false && a.cancelled == false" (click)="cancel(a)">
+                      Cancel
+                      Appointment</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="col-xl-12 col-lg-12 col-md-12" *ngIf="user?.role == 'admin'">
       <h2>All Doctors</h2>
       <section class="panel">
         <div class="panel-body">
