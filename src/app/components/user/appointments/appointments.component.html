@@ -27,6 +27,7 @@
                   <th>Whom To See</th>
                   <th>Message</th>
                   <th>Status</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -35,7 +36,17 @@
                   <td>{{a.time}}</td>
                   <td>{{a.doctor}}</td>
                   <td>{{a.message}}</td>
-                  <td>{{a.accepted}}</td>
+                  <td>
+                    <span *ngIf="a.accepted == false && a.cancelled == false" class="text-warning">Pending</span>
+                    
+                    <span *ngIf="a.accepted == true && a.cancelled == false" class="text-success">Accepted</span>
+                    
+                    <span *ngIf="a.accepted == false && a.cancelled == true" class="text-danger">Cancelled</span>
+                  </td>
+                  <td>
+                    <button class="btn btn-danger" *ngIf="a.accepted == false && a.cancelled == false" (click)="cancel(a)"> Cancel
+                      Appointment</button>
+                  </td>
                 </tr>
               </tbody>
             </table>
