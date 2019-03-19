@@ -45,6 +45,8 @@
                   <td>{{p.emeContactName}}</td>
                   <td>{{p.emeContactPhone}}</td>
                   <td><button class="btn btn-primary" (click)="edit(p.uid, p.email, p.phone)">Edit</button></td>
+                  <td *ngIf="p.canLogin"><button class="btn btn-danger ml-lg" (click)="denyAccess(p.uid)">Deny Access</button></td>
+                  <td *ngIf="!p.canLogin"><button class="btn btn-success ml-lg" (click)="restoreAccess(p.uid)">Restore Access</button></td>
                 </tr>
               </tbody>
             </table>
@@ -509,7 +511,9 @@
                   <td>{{d.email}}</td>
                   <td>{{d.department}}</td>
                   <td>{{d.role}}</td>
-                  <!-- <td><button class="btn btn-primary" (click)="makeAdmin(d.uid)">Make Admin</button></td> -->
+                  <td *ngIf="d.canLogin"><button class="btn btn-danger ml-lg" (click)="denyAccess(d.uid)">Deny Access</button></td>
+                  <td *ngIf="!d.canLogin"><button class="btn btn-success ml-lg" (click)="restoreAccess(d.uid)">Restore Access</button>
+                  </td>
                 </tr>
               </tbody>
             </table>

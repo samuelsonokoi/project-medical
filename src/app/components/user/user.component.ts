@@ -23,6 +23,11 @@ export class UserComponent implements OnInit {
         this._afs.doc(`users/${auth.uid}`).valueChanges().subscribe((user) => {
           if (user) {
             this.currentUser = user;
+
+            if (this.currentUser.canLogin == false) {
+              this._auth.cantLogin();
+              this._auth.logout();
+            }
           }
         });
       }

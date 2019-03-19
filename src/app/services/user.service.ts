@@ -191,14 +191,14 @@ export class UserService {
     });
   }
 
-  makeAdmin(uid){
+  denyAccess(uid){
     const userRef = this._afs.collection("users");
     userRef.ref.where("uid", "==", `${uid}`).get().then((snapshot) => {
       snapshot.forEach((doc) => {
         if (doc.exists) {
-          userRef.doc(doc.id).update({role: "admin"}).then((_) => {
-            this.pnotify.info({
-              text: "Admin priviledges has been granted.",
+          userRef.doc(doc.id).update({canLogin: false}).then((_) => {
+            this.pnotify.error({
+              text: "Login Access Denied.",
               cornerclass: 'ui-pnotify-sharp',
               styling: 'bootstrap4',
               icons: 'fontawesome5'
@@ -210,6 +210,38 @@ export class UserService {
       });
     }).catch((error) => {
       this._handleError(error);
+    });
+  }
+
+  restoreAccess(uid) {
+    const userRef = this._afs.collection("users");
+    userRef.ref.where("uid", "==", `${uid}`).get().then((snapshot) => {
+      snapshot.forEach((doc) => {
+        if (doc.exists) {
+          userRef.doc(doc.id).update({ canLogin: true }).then((_) => {
+            this.pnotify.info({
+              text: "Login Access Restored.",
+              cornerclass: 'ui-pnotify-sharp',
+              styling: 'bootstrap4',
+              icons: 'fontawesome5'
+            })
+          }).catch((error) => {
+            this._handleError(error);
+          });
+        }
+      });
+    }).catch((error) => {
+      this._handleError(error);
+    });
+  }
+
+  cantLogin(){
+    this._router.navigate(["sign-in"]);
+    this.pnotify.error({
+      text: "Login Disabled, Please Contact Administrator For Access.",
+      cornerclass: 'ui-pnotify-sharp',
+      styling: 'bootstrap4',
+      icons: 'fontawesome5'
     });
   }
 

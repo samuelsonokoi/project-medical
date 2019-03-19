@@ -136,8 +136,12 @@ export class DashboardComponent implements OnInit {
     this.editp = false;
   }
 
-  makeAdmin(doctor){
-    this._auth.makeAdmin(doctor);
+  denyAccess(uid){
+    this._auth.denyAccess(uid);
+  }
+
+  restoreAccess(uid) {
+    this._auth.restoreAccess(uid);
   }
 
   cancel(id) {

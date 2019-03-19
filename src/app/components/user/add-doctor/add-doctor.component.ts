@@ -31,9 +31,9 @@ export class AddDoctorComponent implements OnInit {
 
   onSubmit() {
     const { fullName, email, department } = this.addDoctorForm.value;
-    const role = "doctor", password = "1234567890";
+    const role = "doctor", password = "1234567890", canLogin = true;
 
-    let data = { fullName, email, department, role };
+    let data = { fullName, email, department, role, canLogin };
 
     this._auth.register(this.email.value, password, data);
 
