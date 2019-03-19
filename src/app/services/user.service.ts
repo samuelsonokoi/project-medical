@@ -49,7 +49,7 @@ export class UserService {
     return PNotify;
   }
 
-  login(email: string, password: string){
+  async login(email: string, password: string){
     this._afAuth.auth.signInWithEmailAndPassword(email, password).then((_) => {
       this._router.navigate(['user', 'dashboard']);
       this.pnotify.info({
@@ -237,6 +237,7 @@ export class UserService {
 
   cantLogin(){
     this._router.navigate(["sign-in"]);
+    this._afAuth.auth.signOut();
     this.pnotify.error({
       text: "Login Disabled, Please Contact Administrator For Access.",
       cornerclass: 'ui-pnotify-sharp',

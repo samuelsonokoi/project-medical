@@ -26,7 +26,6 @@ export class UserComponent implements OnInit {
 
             if (this.currentUser.canLogin == false) {
               this._auth.cantLogin();
-              this._auth.logout();
             }
           }
         });
