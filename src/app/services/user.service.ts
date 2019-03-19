@@ -33,17 +33,12 @@ export class UserService {
 
     this._afAuth.auth.onAuthStateChanged((user) => {
       if (user != null) {
-        this.currentUser = user;
+        this.isLoggedIn = true;
         this._afs.doc(`users/${user.uid}`).valueChanges().subscribe((user) => {
           if (user) {
             this.user = user;
           }
         });
-        if (user.email == this.adminEmail) {
-          this.isAdmin = true;
-        }
-      } else {
-        this.currentUser = null;
       }
     });
   }
@@ -172,6 +167,28 @@ export class UserService {
       icons: 'fontawesome5'
     });
     this._router.navigate(['user', 'dashboard']);
+  }
+
+  updatePatient(uid, data) {
+    const userRef = this._afs.collection("users");
+    userRef.ref.where("uid", "==", `${uid}`).get().then((snapshot) => {
+      snapshot.forEach((doc) => {
+        if (doc.exists) {
+          userRef.doc(doc.id).update(data).then((_) => {
+            this.pnotify.info({
+              text: "Patient details has been updated.",
+              cornerclass: 'ui-pnotify-sharp',
+              styling: 'bootstrap4',
+              icons: 'fontawesome5'
+            })
+          }).catch((error) => {
+            this._handleError(error);
+          });
+        }
+      });
+    }).catch((error) => {
+      this._handleError(error);
+    });
   }
 
   makeAdmin(uid){

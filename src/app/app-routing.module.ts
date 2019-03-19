@@ -16,7 +16,7 @@ import { HomeComponent } from './components/home/home.component';
 const routes: Routes = [
   { path: "", component: HomeComponent, pathMatch: "full" },
   {
-    path: "user", component: UserComponent, canActivate: [AuthGuardService], canActivateChild: [AuthGuardService], children: [
+    path: "user", component: UserComponent, children: [
     { path: "dashboard", component: DashboardComponent, pathMatch: "full"},
     { path: "book-appointment", component: BookAppointmentComponent, pathMatch: "full"},
     { path: "appointments", component: AppointmentsComponent, pathMatch: "full"},

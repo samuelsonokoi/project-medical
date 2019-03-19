@@ -18,8 +18,6 @@ export class AddPatientComponent implements OnInit {
     this.addPatientForm = new FormGroup({
       fullName: new FormControl("", [Validators.required]),
       email: new FormControl("", [Validators.required, Validators.email]),
-      password: new FormControl("", [Validators.required, Validators.minLength(6)]),
-      confirm_password: new FormControl("", [Validators.required, Validators.minLength(6)]),
       dob: new FormControl("", [Validators.required]),
       address: new FormControl("", [Validators.required]),
       country: new FormControl("", [Validators.required]),
@@ -33,8 +31,6 @@ export class AddPatientComponent implements OnInit {
 
   get fullName() { return this.addPatientForm.get('fullName') }
   get email() { return this.addPatientForm.get('email') }
-  get password() { return this.addPatientForm.get('password') }
-  get confirm_password() { return this.addPatientForm.get('confirm_password') }
   get dob() { return this.addPatientForm.get('dob') }
   get address() { return this.addPatientForm.get('address') }
   get country() { return this.addPatientForm.get('country') }
@@ -47,15 +43,15 @@ export class AddPatientComponent implements OnInit {
 
   onSubmit() {
     const { fullName, email, phone, address, dob, country, emeContactName, emeContactPhone } = this.addPatientForm.value;
-    const role = "patient";
+    const role = "patient", password = '1234567890';
 
     let data = { fullName, email, phone, address, dob, country, emeContactName, emeContactPhone, role };
 
-    this._auth.register(this.email.value, this.password.value, data);
+    this._auth.register(this.email.value, password, data);
 
     this.addPatientForm.reset();
 
-    this._router.navigate(["user", "dashboard"]);
+    this._router.navigate(["user", "add-patient"]);
   }
 
 }

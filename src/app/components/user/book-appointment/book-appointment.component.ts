@@ -35,10 +35,9 @@ export class BookAppointmentComponent implements OnInit {
   async ngOnInit() {
     await this._afAuth.auth.onAuthStateChanged((auth) => {
       if (auth) {
-        this._afs.collection(`users`).ref.where("uid", "==", auth.uid).onSnapshot((querySnapshot) => {
-          if (querySnapshot) {
-            var data = querySnapshot.docs.map(d => d.data());
-            this.user = data;
+        this._afs.doc(`users/${auth.uid}`).valueChanges().subscribe((user) => {
+          if (user) {
+            this.user = user;
           }
         });
       }
@@ -51,7 +50,7 @@ export class BookAppointmentComponent implements OnInit {
 
   }
 
-  onSubmit() {
+  async onSubmit() {
     const { date, time, doctor, message } = this.bookAppointmentForm.value;
     const bookedBy = this.user.fullName, accepted = false, cancelled = false;
 

@@ -24,7 +24,7 @@
                 <tr>
                   <th>Date</th>
                   <th>Time</th>
-                  <th>Whom To See</th>
+                  <th>Booked By</th>
                   <th>Message</th>
                   <th>Status</th>
                   <th>Actions</th>
@@ -34,7 +34,7 @@
                 <tr *ngFor="let a of appointments">
                   <td>{{a.date}}</td>
                   <td>{{a.time}}</td>
-                  <td>{{a.doctor}}</td>
+                  <td>{{a.bookedBy}}</td>
                   <td>{{a.message}}</td>
                   <td>
                     <span *ngIf="a.accepted == false && a.cancelled == false" class="text-warning">Pending</span>

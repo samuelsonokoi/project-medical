@@ -41,26 +41,6 @@
             </div>
           
             <div class="col-md-12 form-group mb-lg">
-              <div class="row">
-                <div class="col-sm-6 mb-lg">
-                  <label>Password</label>
-                  <input name="pwd" type="password" class="form-control input-lg" formControlName="password">
-                  <div *ngIf="password.invalid && (password.dirty || password.touched)" class="invalid-feedback">
-                    Password is required.
-                  </div>
-                </div>
-                <div class="col-sm-6 mb-lg">
-                  <label>Password Confirmation</label>
-                  <input name="pwd_confirm" type="password" class="form-control input-lg" formControlName="confirm_password">
-                  <div *ngIf="confirm_password.invalid && (confirm_password.dirty || confirm_password.touched)"
-                    class="invalid-feedback">
-                    Confirm Password is required.
-                  </div>
-                </div>
-              </div>
-            </div>
-          
-            <div class="col-md-12 form-group mb-lg">
               <label>Date Of Birth</label>
               <input name="dob" type="date" class="form-control input-lg" formControlName="dob">
               <div *ngIf="dob.invalid && (dob.dirty || dob.touched)" class="invalid-feedback">
