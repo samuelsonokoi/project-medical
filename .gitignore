@@ -1,9 +1,9 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # firebase exclude
-/.firebase
-/firebase.json 
-/.firebaserc
+.firebase
+firebase.json 
+.firebaserc
 
 # compiled output
 /dist
