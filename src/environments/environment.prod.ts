@@ -1,11 +1,11 @@
 export const environment = {
   production: true,
   firebase: {
-    apiKey: "AIzaSyD-xgOcZjLByLx_bGnpKx4jev_kDEmOG4s",
-    authDomain: "medication-fa563.firebaseapp.com",
-    databaseURL: "https://medication-fa563.firebaseio.com",
-    projectId: "medication-fa563",
-    storageBucket: "medication-fa563.appspot.com",
-    messagingSenderId: "272799284879"
+    apiKey: "your api key",
+    authDomain: "auth domain",
+    databaseURL: "your database url",
+    projectId: "your project id",
+    storageBucket: "your storage bucket",
+    messagingSenderId: "your message sender id"
   }
 };
